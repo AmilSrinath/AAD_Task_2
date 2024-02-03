@@ -1,5 +1,7 @@
 package lk.ijse.task_2;
 
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -12,6 +14,7 @@ public class Test extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String age = req.getParameter("age");
+
         System.out.println(name);
         System.out.println(age);
 
@@ -19,9 +22,7 @@ public class Test extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }else {
             Jsonb jsonb = JsonbBuilder.create();
-            var itemDTO = jsonb.fromJson(req.getReader(), ItemDTO.class);
-            var dbProcess = new DBProcess();
-            dbProcess.saveItemOne(itemDTO,connection);
+            var dto = jsonb.fromJson(req.getReader(), Test.class);
         }
     }
 }
